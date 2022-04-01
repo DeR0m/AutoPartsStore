@@ -58,11 +58,11 @@
     </div>
 
     <div class="container px-4 px-lg-5">
-        <div class="category">
+        <div class="row row-flex gx-1 gy-2">
             <#list categories as category>
-                <div class="col-sm-3">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                     <a href="#" class="text-decoration-none text-reset">
-                        <div class="card my-1 mx-1">
+                        <div class="card">
                             <div class="text-center p-3">
                                 <#if category.filename??>
                                     <img src="/img/${category.filename}" class="card-img-top" style="width: 5rem;">
