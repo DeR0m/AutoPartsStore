@@ -25,49 +25,61 @@
         </div>
     </div>
 
-    <div class="form-group mt-3">
-        <form method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-sm ${(categoryNameError??)?string('is-invalid','')}"
-                       value="<#if category??>${category.categoryName}</#if>"
-                       placeholder="Название категории" aria-label="categoryName"
-                       name="categoryName"
-                       aria-describedby="basic-addon1">
-                <#if categoryNameError??>
-                    <div class="invalid-feedback">
-                        ${categoryNameError}
+    <div class="container px-4 px-lg-5">
+        <div class="info">
+            <div class="form-group mt-3">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <input type="text"
+                               class="form-control form-control-sm ${(categoryNameError??)?string('is-invalid','')}"
+                               value="<#if category??>${category.categoryName}</#if>"
+                               placeholder="Название категории" aria-label="categoryName"
+                               name="categoryName"
+                               aria-describedby="basic-addon1">
+                        <#if categoryNameError??>
+                            <div class="invalid-feedback">
+                                ${categoryNameError}
+                            </div>
+                        </#if>
                     </div>
-                </#if>
+
+                    <div class="form-group mb-3">
+                        <input name="file" class="form-control form-control-sm" id="formFileSm" type="file">
+                    </div>
+
+                    <#--            <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-secondary">Добавить категорию</button>
+                    </div>
+
+                </form>
             </div>
-
-            <div class="mb-3">
-                <input name="file" class="form-control form-control-sm" id="formFileSm" type="file">
-            </div>
-
-
-            <#--            <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Добавить категорию</button>
-            </div>
-
-        </form>
+        </div>
     </div>
 
-<#--    <div class="card-columns">-->
-<#--        <#list categories as category>-->
-<#--            <div class="card my-3">-->
-<#--                <#if category.filename??>-->
-<#--                    <img src="/img/${category.filename}" class="card-img-top">-->
-<#--                </#if>-->
-<#--                <div class="m-2">-->
-<#--                    <span>${category.categoryName}</span>-->
-<#--                </div>-->
+    <div class="container px-4 px-lg-5">
+        <div class="category">
+            <#list categories as category>
+                <div class="col-sm-3">
+                    <a href="#" class="text-decoration-none text-reset">
+                        <div class="card my-1 mx-1">
+                            <div class="text-center p-3">
+                                <#if category.filename??>
+                                    <img src="/img/${category.filename}" class="card-img-top" style="width: 5rem;">
+                                </#if>
+                            </div>
+                            <div class="card-body text-center">
+                                <span><strong>${category.categoryName}</strong></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <#else>
+                Нет категорий
+            </#list>
+        </div>
+    </div>
 
-<#--            </div>-->
-<#--        <#else>-->
-<#--            Нет категорий-->
-<#--        </#list>-->
-<#--    </div>-->
 
 
 </@c.page>
