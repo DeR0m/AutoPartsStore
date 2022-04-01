@@ -1,11 +1,10 @@
 <div class="wrapper">
     <header class="header">
         <div class="header__content">
-
             <div class="header-top">
                 <div class="container px-4 px-lg-5" style="display: flex;">
                     <div class="logo__container">
-                        <a href="autoPartsStore.html" class="header__logo">Магазин автозапчастей</a>
+                        <a href="autoPartsStore.ftl" class="header__logo">Магазин автозапчастей</a>
                     </div>
                     <div class="top-navigation">
                         <ul class="top-navigation__row">

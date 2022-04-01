@@ -31,7 +31,7 @@ html {
     max-height: 100px;
 }
 
-.logo__container{
+.logo__container {
     display: flex;
     padding: 20px 0;
     font-size: 18px;
@@ -44,23 +44,23 @@ html {
     text-decoration: none;
     font-weight: 900;
     color: white;
-    padding-right:
-5px;
+    padding-right: 5px;
 }
-.top-navigation{
+
+.top-navigation {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     width: 77%;
 }
 
-.top-navigation__row{
+.top-navigation__row {
     display: flex;
     padding-top: 16px;
     font-size: 18px;
 }
 
-.top-navigation__link{
+.top-navigation__link {
     text-decoration: none;
     list-style-type: none;
     font-weight: bold;
@@ -69,32 +69,32 @@ html {
     transition: all 0.3s ease 0s;
 }
 
-.top-navigation__link:hover, .bottom-navigation__link:focus, .bottom-navigation__link:active{
+.top-navigation__link:hover, .bottom-navigation__link:focus, .bottom-navigation__link:active {
     color: var(--orange);
 }
 
-.header-bottom{
+.header-bottom {
     list-style: none;
     display: flex;
     background: var(--white);
     box-shadow: 0 0 20px rgba(44, 44, 44, 0.3);
 }
 
-.bottom-navigation{
+.bottom-navigation {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     width: 88%;
 }
 
-.bottom-navigation__row{
+.bottom-navigation__row {
     display: flex;
     padding: 0;
     margin-right: 125px;
     font-size: 18px;
 }
 
-.bottom-navigation__link{
+.bottom-navigation__link {
     text-decoration: none;
     font-weight: bold;
     color: var(--blue);
@@ -102,6 +102,6 @@ html {
     transition: all 0.3s ease 0s;
 }
 
-.bottom-navigation__link:hover, .bottom-navigation__link:focus, .bottom-navigation__link:active{
+.bottom-navigation__link:hover, .bottom-navigation__link:focus, .bottom-navigation__link:active {
     color: var(--orange);
 }
