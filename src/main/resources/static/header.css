@@ -26,9 +26,9 @@ html {
 
 .header-top {
     width: 100%;
+    display: flex;
     background: var(--blue);
     max-height: 100px;
-    display: flex;
 }
 
 .logo__container{
@@ -44,7 +44,33 @@ html {
     text-decoration: none;
     font-weight: 900;
     color: white;
-    padding-right: 5px;
+    padding-right:
+5px;
+}
+.top-navigation{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 77%;
+}
+
+.top-navigation__row{
+    display: flex;
+    padding-top: 16px;
+    font-size: 18px;
+}
+
+.top-navigation__link{
+    text-decoration: none;
+    list-style-type: none;
+    font-weight: bold;
+    color: var(--white);
+    padding: 0 0 0 20px;
+    transition: all 0.3s ease 0s;
+}
+
+.top-navigation__link:hover, .bottom-navigation__link:focus, .bottom-navigation__link:active{
+    color: var(--orange);
 }
 
 .header-bottom{
@@ -70,6 +96,7 @@ html {
 
 .bottom-navigation__link{
     text-decoration: none;
+    font-weight: bold;
     color: var(--blue);
     padding: 0 20px 0 0;
     transition: all 0.3s ease 0s;
