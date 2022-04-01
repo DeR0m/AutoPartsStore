@@ -7,11 +7,7 @@
                     <div class="logo__container">
                         <a href="autoPartsStore.html" class="header__logo">Магазин автозапчастей</a>
                     </div>
-                    <#--            <ul class="header-top__contacts">-->
-                    <#--                <li class="header-top__item"><i class="fas fa-phone"></i><a href="tel:+375 44 573 63 05" class="header-top__link">+375 44 573 63 05</a></li>-->
-                    <#--                <li class="header-top__item"><i class="fas fa-envelope"></i><a href="mailto:alfenergo@mail.ru" class="header-top__link">alfenergo@mail.ru</a></li>-->
-                    <#--                <li class="header-top__item"><i class="fas fa-map-marker-alt"></i><span>Минская область, д. Королев Стан, ул. Школьная, д. 2А</span></li>-->
-                    <#--            </ul>-->
+
                 </div>
             </div>
             <div class="header-bottom">

@@ -5,13 +5,7 @@ html {
     --white: #fff;
     --gainsboro: #e7e7e7;
     --font: 'OpenSans', sans-serif;
-
     --headFont: 'SourceSansPro', sans-serif;
-}
-
-
-body {
-    color: #113;
 }
 
 .wrapper {
