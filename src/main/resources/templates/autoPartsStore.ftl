@@ -116,7 +116,7 @@
         <div class="row row-flex gx-1 gy-2">
             <#list markCategories as markCategory>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                    <a href="#" class="text-decoration-none text-reset">
+                    <a href="${markCategory.id}/model" class="text-decoration-none text-reset">
                         <div class="card">
                             <div class="text-center p-3">
                                 <#if markCategory.markFilename??>
