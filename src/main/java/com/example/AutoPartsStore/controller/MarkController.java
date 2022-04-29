@@ -1,10 +1,7 @@
 package com.example.AutoPartsStore.controller;
 
 import com.example.AutoPartsStore.domain.*;
-import com.example.AutoPartsStore.repo.CategoryRepo;
-import com.example.AutoPartsStore.repo.MarkCategoryRepo;
-import com.example.AutoPartsStore.repo.MarkModelRepo;
-import com.example.AutoPartsStore.repo.ModelGenerationRepo;
+import com.example.AutoPartsStore.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -33,6 +30,12 @@ public class MarkController {
 
     @Autowired
     private ModelGenerationRepo modelGenerationRepo;
+
+    @Autowired
+    private BodyTypeRepo bodyTypeRepo;
+
+    @Autowired
+    private EngineTypeRepo engineTypeRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -111,7 +114,7 @@ public class MarkController {
 
     //создание поколения
     @PostMapping("{modelCategoryId}/generation/{Id}")
-    public String ModelGeneration(
+    public String createModelGeneration(
             @Valid MarkModel markModel,
             @Valid ModelGeneration modelGeneration,
             BindingResult bindingResult,
@@ -167,5 +170,62 @@ public class MarkController {
         model.addAttribute("bodyTypes", bodyType);
 
         return "bodyType";
+    }
+
+    //создание типа кузова
+    @PostMapping("{modelCategoryId}/generation/bodyType/{Id}")
+    public String createBodyType(
+            @Valid ModelGeneration modelGeneration,
+            @Valid BodyType bodyType,
+            BindingResult bindingResult,
+            Model model,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        bodyType.setModelGenerationId(modelGeneration);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("bodyType", bodyType);
+        } else {
+
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
+
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+                bodyType.setFilename(resultFilename);
+            }
+
+            model.addAttribute("bodyType", null);
+
+            bodyTypeRepo.save(bodyType);
+        }
+
+
+        Iterable<BodyType> bodyTypes = bodyTypeRepo.findAll();
+
+
+        model.addAttribute("bodyTypes", bodyTypes);
+
+        return "redirect:/{modelCategoryId}/generation/bodyType/{Id}";
+    }
+
+    @GetMapping("{modelCategoryId}/generation/bodyType/{Id}")
+    public String engineType(
+            @PathVariable(value = "Id") long id,
+            Model model) {
+        BodyType bodyType = bodyTypeRepo.findById(id).orElseThrow();
+        model.addAttribute("bodyType", bodyType);
+        Set<EngineType> engineType = bodyType.getEngineTypes();
+        model.addAttribute("engineTypes", engineType);
+        return "engineType";
     }
 }
