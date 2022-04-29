@@ -1,6 +1,7 @@
 package com.example.AutoPartsStore.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table
@@ -11,6 +12,9 @@ public class Category {
     private Long id;
     private String categoryName;
     private String filename;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoryId", cascade = CascadeType.ALL)
+    private Set<Subcategory> subcategory;
 
     public Category() {
     }
@@ -37,5 +41,13 @@ public class Category {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public Set<Subcategory> getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(Set<Subcategory> subcategory) {
+        this.subcategory = subcategory;
     }
 }
