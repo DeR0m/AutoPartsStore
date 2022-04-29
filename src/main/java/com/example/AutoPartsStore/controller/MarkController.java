@@ -1,12 +1,10 @@
 package com.example.AutoPartsStore.controller;
 
-import com.example.AutoPartsStore.domain.Category;
-import com.example.AutoPartsStore.domain.MarkCategory;
-import com.example.AutoPartsStore.domain.MarkModel;
-import com.example.AutoPartsStore.domain.Subcategory;
+import com.example.AutoPartsStore.domain.*;
 import com.example.AutoPartsStore.repo.CategoryRepo;
 import com.example.AutoPartsStore.repo.MarkCategoryRepo;
 import com.example.AutoPartsStore.repo.MarkModelRepo;
+import com.example.AutoPartsStore.repo.ModelGenerationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -33,6 +31,9 @@ public class MarkController {
     @Autowired
     private MarkModelRepo markModelRepo;
 
+    @Autowired
+    private ModelGenerationRepo modelGenerationRepo;
+
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -48,6 +49,7 @@ public class MarkController {
         return "markModel";
     }
 
+    //создание модельного ряда
     @PostMapping("{Id}/model")
     public String createModel(
             @Valid MarkCategory markCategory,
@@ -91,5 +93,79 @@ public class MarkController {
         model.addAttribute("markModels", markModel);
 
         return "redirect:/{Id}/model";
+    }
+
+    //переход на поколения автомобиля
+    @GetMapping("{modelCategoryId}/generation/{Id}")
+    public String modelGeneration(
+            @PathVariable(value = "Id") long id,
+            Model model) {
+
+        MarkModel markModel = markModelRepo.findById(id).orElseThrow();
+        model.addAttribute("markModel", markModel);
+        Set<ModelGeneration> modelGeneration = markModel.getModelGenerations();
+        model.addAttribute("modelGenerations", modelGeneration);
+
+        return "modelGeneration";
+    }
+
+    //создание поколения
+    @PostMapping("{modelCategoryId}/generation/{Id}")
+    public String ModelGeneration(
+            @Valid MarkModel markModel,
+            @Valid ModelGeneration modelGeneration,
+            BindingResult bindingResult,
+            Model model,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        modelGeneration.setMarkModelId(markModel);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("modelGeneration", modelGeneration);
+        } else {
+
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
+
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+                modelGeneration.setFilename(resultFilename);
+            }
+
+            model.addAttribute("modelGeneration", null);
+
+            modelGenerationRepo.save(modelGeneration);
+        }
+
+
+        Iterable<ModelGeneration> modelGenerations = modelGenerationRepo.findAll();
+
+
+        model.addAttribute("modelGenerations", modelGeneration);
+
+        return "redirect:/{modelCategoryId}/generation/{Id}";
+    }
+
+    //    переход на выбор тип кузова автомобиля
+    @GetMapping("{modelCategoryId}/generation/bodyType/{Id}")
+    public String bodyType(
+            @PathVariable(value = "Id") long id,
+            Model model) {
+
+        ModelGeneration modelGeneration = modelGenerationRepo.findById(id).orElseThrow();
+        model.addAttribute("modelGeneration", modelGeneration);
+        Set<BodyType> bodyType = modelGeneration.getBodyTypes();
+        model.addAttribute("bodyTypes", bodyType);
+
+        return "bodyType";
     }
 }

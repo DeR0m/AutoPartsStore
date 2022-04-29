@@ -63,5 +63,13 @@ public class ModelGeneration {
     public void setGraduationYear(String graduationYear) {
         this.graduationYear = graduationYear;
     }
+
+    public Set<BodyType> getBodyTypes() {
+        return bodyTypes;
+    }
+
+    public void setBodyTypes(Set<BodyType> bodyTypes) {
+        this.bodyTypes = bodyTypes;
+    }
 }
 

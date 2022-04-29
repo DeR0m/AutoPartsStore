@@ -39,7 +39,7 @@
         <div class="row row-flex gx-1 gy-2">
             <#list markModels as markModel>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                    <a href="${markModel.id}/generation" class="text-decoration-none text-reset">
+                    <a href="generation/${markModel.id}" class="text-decoration-none text-reset">
                         <div class="card">
                             <div class="text-center p-3">
                                 <#if markModel.filename??>
