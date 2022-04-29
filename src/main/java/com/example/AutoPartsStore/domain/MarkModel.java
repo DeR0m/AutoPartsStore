@@ -1,6 +1,7 @@
 package com.example.AutoPartsStore.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table
@@ -14,6 +15,9 @@ public class MarkModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mark_category_id")
     private MarkCategory markCategoryId;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "markModelId", cascade = CascadeType.ALL)
+    private Set<ModelGeneration> modelGenerations;
 
     public MarkModel() {
     }
@@ -44,5 +48,17 @@ public class MarkModel {
 
     public void setMarkCategoryId(MarkCategory markCategoryId) {
         this.markCategoryId = markCategoryId;
+    }
+
+    public MarkCategory getMarkCategoryId() {
+        return markCategoryId;
+    }
+
+    public Set<ModelGeneration> getModelGenerations() {
+        return modelGenerations;
+    }
+
+    public void setModelGenerations(Set<ModelGeneration> modelGenerations) {
+        this.modelGenerations = modelGenerations;
     }
 }
