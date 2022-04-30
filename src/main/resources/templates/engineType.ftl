@@ -1,7 +1,7 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-<h5>${bodyType.bodyTypeName}</h5>
+    <h5>${bodyType.bodyTypeName}</h5>
 
     <div class="container px-4 px-lg-5">
         <div class="info">
@@ -88,10 +88,20 @@
     </div>
 
     <div class="container px-4 px-lg-5">
+        <div class="d-flex justify-content-evenly p-2">
+            <span><strong>Модель</strong></span>
+            <span><strong>Объем</strong></span>
+            <span><strong>Мощность</strong></span>
+            <span><strong>Двигатель</strong></span>
+            <span><strong>Тип топлива</strong></span>
+        </div>
+
         <div class="row row-flex gx-1 gy-2">
+
             <#list engineTypes as engineType>
                 <div class="">
                     <a href="#" class="text-decoration-none text-reset">
+
                         <div class="card">
                             <div class="d-flex justify-content-evenly p-3">
                                 <span><strong>${engineType.engineModel}</strong></span>
@@ -100,18 +110,6 @@
                                 <span><strong>${engineType.engineName}</strong></span>
                                 <span><strong>${engineType.fuelType}</strong></span>
                             </div>
-<#--                            <div class="card-body text-center">-->
-
-<#--                            </div>-->
-<#--                            <div class="card-body text-center">-->
-
-<#--                            </div>-->
-<#--                            <div class="card-body text-center">-->
-
-<#--                            </div>-->
-<#--                            <div class="card-body text-center">-->
-
-<#--                            </div>-->
                         </div>
                     </a>
                 </div>
