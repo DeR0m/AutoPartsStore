@@ -218,7 +218,7 @@ public class MarkController {
         return "redirect:/{modelCategoryId}/generation/bodyType/{Id}";
     }
 
-    @GetMapping("{modelCategoryId}/generation/bodyType/{Id}")
+    @GetMapping("{modelCategoryId}/generation/bodyType/engineType/{Id}")
     public String engineType(
             @PathVariable(value = "Id") long id,
             Model model) {

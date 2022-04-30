@@ -16,7 +16,7 @@ public class EngineType {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "body_type_id")
-    private BodyType bodyType;
+    private BodyType bodyTypeId;
 
     public EngineType() {
     }
@@ -69,11 +69,11 @@ public class EngineType {
         this.fuelType = fuelType;
     }
 
-    public BodyType getBodyType() {
-        return bodyType;
+    public BodyType getBodyTypeId() {
+        return bodyTypeId;
     }
 
-    public void setBodyType(BodyType bodyType) {
-        this.bodyType = bodyType;
+    public void setBodyTypeId(BodyType bodyTypeId) {
+        this.bodyTypeId = bodyTypeId;
     }
 }
