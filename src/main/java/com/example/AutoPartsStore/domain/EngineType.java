@@ -13,6 +13,7 @@ public class EngineType {
     private int powerHp; // в л.с. (или добавить новую переменную или сделать калькулятор для перевода
     private String engineName;
     private String fuelType;
+    private String filename;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "body_type_id")
@@ -75,5 +76,13 @@ public class EngineType {
 
     public void setBodyTypeId(BodyType bodyTypeId) {
         this.bodyTypeId = bodyTypeId;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

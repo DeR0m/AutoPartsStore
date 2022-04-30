@@ -228,4 +228,50 @@ public class MarkController {
         model.addAttribute("engineTypes", engineType);
         return "engineType";
     }
+
+    //метод создания типа двигателя
+    @PostMapping("{modelCategoryId}/generation/bodyType/engineType/{Id}")
+    public String createEngineType(
+            @Valid BodyType bodyType,
+            @Valid EngineType engineType,
+            BindingResult bindingResult,
+            Model model,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        engineType.setBodyTypeId(bodyType);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("engineType", engineType);
+        } else {
+
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
+
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+                engineType.setFilename(resultFilename);
+            }
+
+            model.addAttribute("engineType", null);
+
+            engineTypeRepo.save(engineType);
+        }
+
+
+        Iterable<EngineType> engineTypes = engineTypeRepo.findAll();
+
+
+        model.addAttribute("engineTypes", engineTypes);
+
+        return "redirect:/{modelCategoryId}/generation/bodyType/engineType/{Id}";
+    }
 }
