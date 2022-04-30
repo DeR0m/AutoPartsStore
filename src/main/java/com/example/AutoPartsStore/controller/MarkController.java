@@ -234,41 +234,15 @@ public class MarkController {
     public String createEngineType(
             @Valid BodyType bodyType,
             @Valid EngineType engineType,
-            BindingResult bindingResult,
-            Model model,
-            @RequestParam("file") MultipartFile file
-    ) throws IOException {
+            Model model
+    ) {
         engineType.setBodyTypeId(bodyType);
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("engineType", engineType);
-        } else {
+        model.addAttribute("engineType", engineType);
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                engineType.setFilename(resultFilename);
-            }
-
-            model.addAttribute("engineType", null);
-
-            engineTypeRepo.save(engineType);
-        }
-
+        engineTypeRepo.save(engineType);
 
         Iterable<EngineType> engineTypes = engineTypeRepo.findAll();
-
 
         model.addAttribute("engineTypes", engineTypes);
 

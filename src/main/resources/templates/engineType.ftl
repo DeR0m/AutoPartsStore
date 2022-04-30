@@ -77,10 +77,6 @@
                         </#if>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <input name="file" class="form-control form-control-sm" id="formFileSm" type="file">
-                    </div>
-
                     <#--            <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
                     <div class="form-group">
                         <button type="submit" class="btn btn-outline-secondary">Добавить тип двигателя</button>
@@ -94,29 +90,28 @@
     <div class="container px-4 px-lg-5">
         <div class="row row-flex gx-1 gy-2">
             <#list engineTypes as engineType>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <div class="">
                     <a href="#" class="text-decoration-none text-reset">
                         <div class="card">
-                            <div class="text-center p-3">
-                                <#if engineType.filename??>
-                                    <img src="/img/${engineType.filename}" class="card-img-top" style="width: 5rem;">
-                                </#if>
-                            </div>
-                            <div class="card-body text-center">
+                            <div class="d-flex justify-content-evenly p-3">
                                 <span><strong>${engineType.engineModel}</strong></span>
-                            </div>
-                            <div class="card-body text-center">
                                 <span><strong>${engineType.engineCapacity}</strong></span>
-                            </div>
-                            <div class="card-body text-center">
                                 <span><strong>${engineType.powerHp}</strong></span>
-                            </div>
-                            <div class="card-body text-center">
                                 <span><strong>${engineType.engineName}</strong></span>
-                            </div>
-                            <div class="card-body text-center">
                                 <span><strong>${engineType.fuelType}</strong></span>
                             </div>
+<#--                            <div class="card-body text-center">-->
+
+<#--                            </div>-->
+<#--                            <div class="card-body text-center">-->
+
+<#--                            </div>-->
+<#--                            <div class="card-body text-center">-->
+
+<#--                            </div>-->
+<#--                            <div class="card-body text-center">-->
+
+<#--                            </div>-->
                         </div>
                     </a>
                 </div>
