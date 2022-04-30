@@ -41,7 +41,7 @@
 
                     <#--            <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
                     <div class="form-group">
-                        <button type="submit" class="btn btn-outline-secondary">Добавить модель</button>
+                        <button type="submit" class="btn btn-outline-secondary">Добавить поколение</button>
                     </div>
 
                 </form>
