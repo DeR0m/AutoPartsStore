@@ -37,9 +37,6 @@ public class MainController {
     @Value("${upload.path}")
     private String uploadPath;
 
-    @Value("${uploadForMark.path}")
-    private String uploadPathForMark;
-
     //вывод информации на главную
     @GetMapping("/")
     public String autoPartsStore(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
@@ -116,7 +113,7 @@ public class MainController {
         } else {
 
             if (fileForMarkCategory != null && !fileForMarkCategory.getOriginalFilename().isEmpty()) {
-                File uploadForMarkDir = new File(uploadPathForMark);
+                File uploadForMarkDir = new File(uploadPath);
 
                 if (!uploadForMarkDir.exists()) {
                     uploadForMarkDir.mkdir();

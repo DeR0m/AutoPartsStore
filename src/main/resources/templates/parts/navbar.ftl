@@ -39,6 +39,9 @@
                                 <li class="bottom-navigation__link">
                                     <a class="bottom-navigation__link" href="/categories">Категории</a>
                                 </li>
+                                <li class="bottom-navigation__link">
+                                    <a class="bottom-navigation__link" href="/markCategories">Марки автомобилей</a>
+                                </li>
 
                             </ul>
                         </div>
