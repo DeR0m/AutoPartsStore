@@ -1,3 +1,6 @@
+<#include "security.ftl">
+<#import "login.ftl" as l>
+
 <div class="wrapper">
     <header class="header">
         <div class="header__content">
@@ -8,11 +11,11 @@
                     </div>
                     <div class="top-navigation">
                         <ul class="top-navigation__row">
-                            <li class="top-navigation__link">
-                                <a class="top-navigation__link" href="/">Войти</a>
+                            <li class="top-navigation__link pt-2">
+                                ${name}
                             </li>
                             <li class="top-navigation__link">
-                                <a class="top-navigation__link" href="/">Регистрация</a>
+                                <@l.logout />
                             </li>
                         </ul>
                     </div>

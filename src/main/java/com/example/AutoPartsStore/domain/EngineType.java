@@ -1,6 +1,7 @@
 package com.example.AutoPartsStore.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table
@@ -17,6 +18,9 @@ public class EngineType {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "body_type_id")
     private BodyType bodyTypeId;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "engineTypeId", cascade = CascadeType.ALL)
+    private Set<CategoryForMark> categoryForMarks;
 
     public EngineType() {
     }
@@ -77,5 +81,11 @@ public class EngineType {
         this.bodyTypeId = bodyTypeId;
     }
 
+    public Set<CategoryForMark> getCategoryForMarks() {
+        return categoryForMarks;
+    }
 
+    public void setCategoryForMarks(Set<CategoryForMark> categoryForMarks) {
+        this.categoryForMarks = categoryForMarks;
+    }
 }

@@ -1,18 +1,22 @@
 package com.example.AutoPartsStore.service;
 
-import com.example.AutoPartsStore.domain.Category;
-import com.example.AutoPartsStore.repo.CategoryRepo;
+import com.example.AutoPartsStore.domain.MarkCategory;
+import com.example.AutoPartsStore.repo.MarkCategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+
+import java.util.Map;
 
 @Service
 public class StoreService {
-    @Autowired
-    private CategoryRepo categoryRepo;
+//    @Autowired
+//    private CategoryRepo categoryRepo;
 
-    private void saveCategory(Category category, String name, Model model){
-        category.setCategoryName(name);
-        categoryRepo.save(category);
+    @Autowired
+    MarkCategoryRepo markCategoryRepo;
+
+    public void saveCategory(MarkCategory markCategory, String name, Map<String, String> model){
+        markCategory.setMarkCategoryName(name);
+        markCategoryRepo.save(markCategory);
     }
 }

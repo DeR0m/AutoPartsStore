@@ -1,15 +1,19 @@
 package com.example.AutoPartsStore.controller;
 
 import com.example.AutoPartsStore.domain.Category;
+import com.example.AutoPartsStore.domain.Product;
 import com.example.AutoPartsStore.domain.Subcategory;
-import com.example.AutoPartsStore.repo.CategoryRepo;
+import com.example.AutoPartsStore.repo.ProductRepo;
 import com.example.AutoPartsStore.repo.SubcategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -20,42 +24,41 @@ import java.util.Set;
 import java.util.UUID;
 
 @Controller
-public class CategoryController {
+public class ProductController {
     @Autowired
     private SubcategoryRepo subcategoryRepo;
 
     @Autowired
-    private CategoryRepo categoryRepo;
+    private ProductRepo productRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
 
-    //Переход на категорию
-    @GetMapping("category/{id}")
+    @GetMapping("category/product/{id}")
     public String categoryMain(@PathVariable(value = "id") long id,
                                Model model) {
-        Category category = categoryRepo.findById(id).orElseThrow();
-        model.addAttribute("category", category);
-        Set<Subcategory> subcategory = category.getSubcategory();
-        model.addAttribute("subcategories", subcategory);
+        Subcategory subcategory = subcategoryRepo.findById(id).orElseThrow();
+        model.addAttribute("subcategory", subcategory);
+        Set<Product> product = subcategory.getProducts();
+        model.addAttribute("products", product);
 
-        return "subcategoryMain";
+        return "product";
     }
 
-    @PostMapping("category/{id}")
+    @PostMapping("category/product/{id}")
     public String createSubcategory(
-            @Valid Category category,
             @Valid Subcategory subcategory,
+            @Valid Product product,
             BindingResult bindingResult,
             Model model,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-      subcategory.setCategoryId(category);
+        product.setSubcategoryId(subcategory);
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             model.mergeAttributes(errorsMap);
-            model.addAttribute("subcategory", subcategory);
+            model.addAttribute("product", product);
         } else {
 
             if (file != null && !file.getOriginalFilename().isEmpty()) {
@@ -70,25 +73,26 @@ public class CategoryController {
 
                 file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-                subcategory.setFilename(resultFilename);
+                product.setFilename(resultFilename);
             }
 
-            model.addAttribute("subcategory", null);
+            model.addAttribute("product", null);
 
-            subcategoryRepo.save(subcategory);
+            productRepo.save(product);
         }
 
-        Iterable<Subcategory> subcategories = subcategoryRepo.findAll();
+        Iterable<Product> products = productRepo.findAll();
 
-        model.addAttribute("subcategories", subcategories);
+        model.addAttribute("products", products);
 
-        return "redirect:/category/{id}";
+        return "redirect:/category/product/{id}";
     }
 
-    @PostMapping("{categoryId}/{subcategoryId}/removeSubcategory")
-    public String removeSubcategory(@PathVariable(value = "subcategoryId") long id) {
-        Subcategory subcategory = subcategoryRepo.findById(id).orElseThrow();
-        subcategoryRepo.delete(subcategory);
-        return "redirect:/category/{categoryId}";
+    @PostMapping("category/product/{subcategoryId}/{productId}/productRemove")
+    public String productRemove(@PathVariable(value = "productId") long id) {
+        Product product = productRepo.findById(id).orElseThrow();
+        productRepo.delete(product);
+        System.out.println("element delete");
+        return "redirect:/category/product/{subcategoryId}";
     }
 }

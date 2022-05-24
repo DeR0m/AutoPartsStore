@@ -4,6 +4,7 @@ import com.example.AutoPartsStore.domain.Category;
 import com.example.AutoPartsStore.domain.MarkCategory;
 import com.example.AutoPartsStore.repo.CategoryRepo;
 import com.example.AutoPartsStore.repo.MarkCategoryRepo;
+import com.example.AutoPartsStore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,9 @@ import java.util.UUID;
 public class MainController {
 
     @Autowired
+    private StoreService storeService;
+
+    @Autowired
     private CategoryRepo categoryRepo;
 
     @Autowired
@@ -38,11 +42,19 @@ public class MainController {
 
     //вывод информации на главную
     @GetMapping("/")
-    public String autoPartsStore(Model model) {
+    public String autoPartsStore(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Category> categories = categoryRepo.findAll();
-        Iterable<MarkCategory> markCategories = markCategoryRepo.findAll();
+        Iterable<MarkCategory> markCategories;
+
+        if (filter != null && !filter.isEmpty()) {
+            markCategories = markCategoryRepo.findByMarkCategoryName(filter);
+        } else {
+            markCategories = markCategoryRepo.findAll();
+        }
+
         model.addAttribute("categories", categories);
         model.addAttribute("markCategories", markCategories);
+        model.addAttribute("filter", filter);
         return "autoPartsStore";
     }
 
@@ -81,9 +93,7 @@ public class MainController {
             categoryRepo.save(category);
         }
 
-
         Iterable<Category> categories = categoryRepo.findAll();
-
 
         model.addAttribute("categories", categories);
 
@@ -125,15 +135,47 @@ public class MainController {
             markCategoryRepo.save(markCategory);
         }
 
-
         Iterable<MarkCategory> markCategories = markCategoryRepo.findAll();
-
 
         model.addAttribute("markCategories", markCategories);
 
         return "redirect:/";
     }
 
+    @PostMapping("{id}/remove")
+    public String removeCategory(@PathVariable(value = "id") long id) {
+        Category category = categoryRepo.findById(id).orElseThrow();
+        categoryRepo.delete(category);
+        return "redirect:/";
+    }
 
+    @PostMapping("{id}/edit")
+    public String updateCategory(@PathVariable(value = "id") long id, Model model){
+        Category category = categoryRepo.findById(id).orElseThrow();
+        model.addAttribute("category", category);
+        return "edit";
+    }
 
+    @PostMapping("{id}/removeMark")
+    public String removeCategoryMark(@PathVariable(value = "id") long id) {
+        MarkCategory markCategory = markCategoryRepo.findById(id).orElseThrow();
+        markCategoryRepo.delete(markCategory);
+        return "redirect:/";
+    }
+
+    @PostMapping("{id}/editMark")
+    public String updateCategoryMark(@PathVariable(value = "id") long id, Model model){
+        MarkCategory markCategory = markCategoryRepo.findById(id).orElseThrow();
+        model.addAttribute("markCategory", markCategory);
+        return "editMark";
+    }
+
+    @PostMapping("/editMark")
+    public String saveCategory(
+            @RequestParam String name,
+            @RequestParam Map<String, String> form,
+            @RequestParam("markCategoryId") MarkCategory markCategory) {
+        storeService.saveCategory(markCategory, name, form);
+        return "redirect:";
+    }
 }

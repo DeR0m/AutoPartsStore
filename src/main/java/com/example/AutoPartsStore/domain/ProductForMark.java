@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class Product {
+public class ProductForMark {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,7 +18,7 @@ public class Product {
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategoryId;
 
-    public Product() {
+    public ProductForMark() {
     }
 
     public Long getId() {

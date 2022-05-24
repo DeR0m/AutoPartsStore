@@ -5,18 +5,22 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Category {
+public class CategoryForMark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String categoryName;
+    private String categoryForMarkName;
     private String filename;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoryId", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "categoryForMarkId", cascade = CascadeType.ALL)
     private Set<Subcategory> subcategory;
 
-    public Category() {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "engine_type_id")
+    private EngineType engineTypeId;
+
+    public CategoryForMark() {
     }
 
     public Long getId() {
@@ -27,12 +31,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getCategoryForMarkName() {
+        return categoryForMarkName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryForMarkName(String categoryForMarkName) {
+        this.categoryForMarkName = categoryForMarkName;
     }
 
     public String getFilename() {
@@ -51,4 +55,11 @@ public class Category {
         this.subcategory = subcategory;
     }
 
+    public EngineType getEngineTypeId() {
+        return engineTypeId;
+    }
+
+    public void setEngineTypeId(EngineType engineTypeId) {
+        this.engineTypeId = engineTypeId;
+    }
 }

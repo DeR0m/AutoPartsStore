@@ -1,0 +1,38 @@
+.wrapper {
+    width: 100%;
+    margin: 0 auto;
+    font-style: var(--font);
+}
+
+.footer {
+    font-family: var(--headFont);
+    width: 100%;
+}
+
+.footer__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-top {
+    width: 100%;
+    display: flex;
+    background: var(--blue);
+    max-height: 100px;
+}
+
+.text__container {
+    display: flex;
+    padding: 20px 0;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.text__logo {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    font-weight: 900;
+    color: white;
+    padding-right: 5px;
+}

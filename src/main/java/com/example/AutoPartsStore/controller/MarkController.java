@@ -103,9 +103,12 @@ public class MarkController {
     public String modelGeneration(
             @PathVariable(value = "Id") long id,
             Model model) {
-
         MarkModel markModel = markModelRepo.findById(id).orElseThrow();
         model.addAttribute("markModel", markModel);
+
+        MarkCategory markCategory = markModel.getMarkCategoryId();
+        model.addAttribute("markCategory", markCategory);
+
         Set<ModelGeneration> modelGeneration = markModel.getModelGenerations();
         model.addAttribute("modelGenerations", modelGeneration);
 
@@ -163,9 +166,15 @@ public class MarkController {
     public String bodyType(
             @PathVariable(value = "Id") long id,
             Model model) {
-
         ModelGeneration modelGeneration = modelGenerationRepo.findById(id).orElseThrow();
         model.addAttribute("modelGeneration", modelGeneration);
+
+        MarkModel markModel = modelGeneration.getMarkModelId();
+        model.addAttribute("markModel", markModel);
+
+        MarkCategory markCategory = markModel.getMarkCategoryId();
+        model.addAttribute("markCategory", markCategory);
+
         Set<BodyType> bodyType = modelGeneration.getBodyTypes();
         model.addAttribute("bodyTypes", bodyType);
 
@@ -224,6 +233,16 @@ public class MarkController {
             Model model) {
         BodyType bodyType = bodyTypeRepo.findById(id).orElseThrow();
         model.addAttribute("bodyType", bodyType);
+
+        ModelGeneration modelGeneration = bodyType.getModelGenerationId();
+        model.addAttribute("modelGeneration", modelGeneration);
+
+        MarkModel markModel = modelGeneration.getMarkModelId();
+        model.addAttribute("markModel", markModel);
+
+        MarkCategory markCategory = markModel.getMarkCategoryId();
+        model.addAttribute("markCategory", markCategory);
+
         Set<EngineType> engineType = bodyType.getEngineTypes();
         model.addAttribute("engineTypes", engineType);
         return "engineType";
