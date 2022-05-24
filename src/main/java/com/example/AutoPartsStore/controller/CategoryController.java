@@ -1,7 +1,6 @@
 package com.example.AutoPartsStore.controller;
 
 import com.example.AutoPartsStore.domain.Category;
-import com.example.AutoPartsStore.domain.MarkCategory;
 import com.example.AutoPartsStore.domain.Subcategory;
 import com.example.AutoPartsStore.repo.CategoryRepo;
 import com.example.AutoPartsStore.repo.SubcategoryRepo;
@@ -10,7 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -86,6 +88,13 @@ public class CategoryController {
         model.addAttribute("categories", categories);
 
         return "categoryMain";
+    }
+
+    @PostMapping("{id}/removeCategory")
+    public String removeCategory(@PathVariable(value = "id") long id) {
+        Category category = categoryRepo.findById(id).orElseThrow();
+        categoryRepo.delete(category);
+        return "redirect:/categories";
     }
 
     //Переход на категорию

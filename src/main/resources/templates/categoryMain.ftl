@@ -24,7 +24,7 @@
         <div class="container px-4 px-lg-5">
             <div class="info">
                 <div class="form-group mt-3">
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" action="/categories">
                         <div class="form-group mb-3">
                             <input type="text"
                                    class="form-control form-control-sm ${(categoryNameError??)?string('is-invalid','')}"
@@ -76,7 +76,7 @@
                                 <div class="container px-4">
                                     <div class="row-flex">
                                         <div class="px-lg-1">
-                                            <form action="${category.id}/remove" method="post">
+                                            <form action="${category.id}/removeCategory" method="post">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Удалить</button>
                                             </form>
