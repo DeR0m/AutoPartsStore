@@ -1,6 +1,7 @@
 package com.example.AutoPartsStore.controller;
 
 import com.example.AutoPartsStore.domain.Category;
+import com.example.AutoPartsStore.domain.MarkCategory;
 import com.example.AutoPartsStore.domain.Subcategory;
 import com.example.AutoPartsStore.repo.CategoryRepo;
 import com.example.AutoPartsStore.repo.SubcategoryRepo;
@@ -29,6 +30,63 @@ public class CategoryController {
 
     @Value("${upload.path}")
     private String uploadPath;
+
+    @GetMapping("/categories")
+    public String autoPartsStore(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+        Iterable<Category> categories;
+
+        if (filter != null && !filter.isEmpty()) {
+            categories = categoryRepo.findByCategoryName(filter);
+        } else {
+            categories = categoryRepo.findAll();
+        }
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("filter", filter);
+        return "categoryMain";
+    }
+
+    //post method для создания категорий товаров
+    @PostMapping("/categories")
+    public String createCategory(
+            @Valid Category category,
+            BindingResult bindingResult,
+            Model model,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("category", category);
+        } else {
+
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
+
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+                category.setFilename(resultFilename);
+            }
+
+            model.addAttribute("category", null);
+
+            categoryRepo.save(category);
+        }
+
+        Iterable<Category> categories = categoryRepo.findAll();
+
+        model.addAttribute("categories", categories);
+
+        return "categoryMain";
+    }
 
     //Переход на категорию
     @GetMapping("category/{id}")

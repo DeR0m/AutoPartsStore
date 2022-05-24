@@ -37,7 +37,7 @@
                                     <a class="bottom-navigation__link" href="/">Главная</a>
                                 </li>
                                 <li class="bottom-navigation__link">
-                                    <a class="bottom-navigation__link" href="/">Категории</a>
+                                    <a class="bottom-navigation__link" href="/categories">Категории</a>
                                 </li>
 
                             </ul>
