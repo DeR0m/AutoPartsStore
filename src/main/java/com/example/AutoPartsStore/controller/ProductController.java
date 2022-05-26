@@ -5,6 +5,7 @@ import com.example.AutoPartsStore.domain.Product;
 import com.example.AutoPartsStore.domain.Subcategory;
 import com.example.AutoPartsStore.repo.ProductRepo;
 import com.example.AutoPartsStore.repo.SubcategoryRepo;
+import com.example.AutoPartsStore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,9 @@ public class ProductController {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private StoreService storeService;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -94,5 +98,24 @@ public class ProductController {
         productRepo.delete(product);
         System.out.println("element delete");
         return "redirect:/category/product/{subcategoryId}";
+    }
+
+    @PostMapping("category/product/{id}/productEdit")
+    public String updateProduct(@PathVariable(value = "id") long id, Model model){
+        Product product = productRepo.findById(id).orElseThrow();
+        model.addAttribute("product", product);
+        return "productEdit";
+    }
+
+    @PostMapping("/editProduct")
+    public String saveProduct(
+            @RequestParam String name,
+            @RequestParam String description,
+            @RequestParam String amount,
+            @RequestParam String price,
+            @RequestParam Map<String, String> form,
+            @RequestParam("productId") Product product) {
+        storeService.saveProduct(product, name, description, amount, price, form);
+        return "redirect:";
     }
 }

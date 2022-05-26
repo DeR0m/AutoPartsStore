@@ -11,7 +11,7 @@ public class EngineType {
     private Long id;
     private String engineModel;
     private String engineCapacity;
-    private int powerHp; // в л.с. (или добавить новую переменную или сделать калькулятор для перевода
+    private String powerHp; // в л.с. (или добавить новую переменную или сделать калькулятор для перевода
     private String engineName;
     private String fuelType;
 
@@ -49,11 +49,11 @@ public class EngineType {
         this.engineCapacity = engineCapacity;
     }
 
-    public int getPowerHp() {
+    public String getPowerHp() {
         return powerHp;
     }
 
-    public void setPowerHp(int powerHp) {
+    public void setPowerHp(String powerHp) {
         this.powerHp = powerHp;
     }
 

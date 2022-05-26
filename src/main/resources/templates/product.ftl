@@ -110,7 +110,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="#" method="post">
+                                            <form action="${product.id}/productEdit" method="post">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>

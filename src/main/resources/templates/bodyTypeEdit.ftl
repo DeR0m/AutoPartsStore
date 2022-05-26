@@ -3,12 +3,12 @@
 
 <#--    все работает, но надо отредактировать, чтобы было красиво!!!!!!!!!!!!!!!!!!!!-->
 <@c.page>
-    <h5>${subcategory.subcategoryName}</h5>
+    <h5>${bodyType.bodyTypeName}</h5>
 
-    <form action="/editMark" method="post">
-        <input type="text" name="name" value="${subcategory.subcategoryName}">
+    <form action="/editBodyType" method="post">
+        <input type="text" name="name" value="${bodyType.bodyTypeName}">
 
-        <input type="hidden" value="${subcategory.id}" name="subcategoryForMarkId">
+        <input type="hidden" value="${bodyType.id}" name="bodyTypeId">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit">Сохранить изменения</button>
 

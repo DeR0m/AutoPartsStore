@@ -2,8 +2,8 @@ package com.example.AutoPartsStore.controller;
 
 import com.example.AutoPartsStore.domain.*;
 import com.example.AutoPartsStore.repo.ProductForMarkRepo;
-import com.example.AutoPartsStore.repo.ProductRepo;
 import com.example.AutoPartsStore.repo.SubcategoryRepo;
+import com.example.AutoPartsStore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -24,6 +24,10 @@ import java.util.UUID;
 
 @Controller
 public class ProductForMarkController {
+
+    @Autowired
+    private StoreService storeService;
+
     @Autowired
     private SubcategoryRepo subcategoryRepo;
 
@@ -105,5 +109,24 @@ public class ProductForMarkController {
         model.addAttribute("productForMarks", productForMarks);
 
         return "redirect:/{modelCategoryId}/generation/bodyType/engineType/categoryForMark/subcategoryForMark/productForMark/{Id}";
+    }
+
+    @PostMapping("model/generation/bodyType/engineType/categoryForMark/subcategoryForMark/productForMark/{id}/productForMarkEdit")
+    public String updateProductForMark(@PathVariable(value = "id") long id, Model model){
+        ProductForMark productForMark = productForMarkRepo.findById(id).orElseThrow();
+        model.addAttribute("productForMark", productForMark);
+        return "productForMarkEdit";
+    }
+
+    @PostMapping("/editProductForMark")
+    public String saveProductForMark(
+            @RequestParam String name,
+            @RequestParam String description,
+            @RequestParam String amount,
+            @RequestParam String price,
+            @RequestParam Map<String, String> form,
+            @RequestParam("productForMarkId") ProductForMark productForMark) {
+        storeService.saveProductForMark(productForMark, name, description, amount, price, form);
+        return "redirect:";
     }
 }

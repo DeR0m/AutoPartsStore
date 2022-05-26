@@ -88,7 +88,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="${category.id}/edit" method="post">
+                                            <form action="${category.id}/editCategory" method="post">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>
@@ -160,7 +160,7 @@
         <div class="row row-flex gx-1 gy-2">
             <#list markCategories as markCategory>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                    <a href="${markCategory.id}/model" class="text-decoration-none text-reset">
+                    <a href="model/${markCategory.id}" class="text-decoration-none text-reset">
                         <div class="card">
                             <div class="text-center p-3">
                                 <#if markCategory.markFilename??>

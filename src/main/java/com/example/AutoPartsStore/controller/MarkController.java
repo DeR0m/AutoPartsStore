@@ -2,6 +2,7 @@ package com.example.AutoPartsStore.controller;
 
 import com.example.AutoPartsStore.domain.*;
 import com.example.AutoPartsStore.repo.*;
+import com.example.AutoPartsStore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ import java.util.UUID;
 @Controller
 public class MarkController {
     @Autowired
+    private StoreService storeService;
+
+    @Autowired
     private MarkCategoryRepo markCategoryRepo;
 
     @Autowired
@@ -41,7 +45,7 @@ public class MarkController {
     private String uploadPath;
 
     //Переход на марку автомобиля
-    @GetMapping("{Id}/model")
+    @GetMapping("model/{Id}")
     public String categoryMain(@PathVariable(value = "Id") long id,
                                Model model) {
         MarkCategory markCategory = markCategoryRepo.findById(id).orElseThrow();
@@ -53,7 +57,7 @@ public class MarkController {
     }
 
     //создание модельного ряда
-    @PostMapping("{Id}/model")
+    @PostMapping("model/{Id}")
     public String createModel(
             @Valid MarkCategory markCategory,
             @Valid MarkModel markModel,
@@ -266,5 +270,73 @@ public class MarkController {
         model.addAttribute("engineTypes", engineTypes);
 
         return "redirect:/{modelCategoryId}/generation/bodyType/engineType/{Id}";
+    }
+
+    @PostMapping("model/{id}/editMarkModel")
+    public String updateMarkModel(@PathVariable(value = "id") long id, Model model){
+        MarkModel markModel = markModelRepo.findById(id).orElseThrow();
+        model.addAttribute("markModel", markModel);
+        return "markModelEdit";
+    }
+
+    @PostMapping("/editMarkModel")
+    public String saveMarkModel(
+            @RequestParam String name,
+            @RequestParam Map<String, String> form,
+            @RequestParam("markModelId") MarkModel markModel) {
+        storeService.saveMarkModel(markModel, name, form);
+        return "redirect:";
+    }
+
+    @PostMapping("model/generation/{id}/editModelGeneration")
+    public String updateModelGeneration(@PathVariable(value = "id") long id, Model model){
+        ModelGeneration modelGeneration = modelGenerationRepo.findById(id).orElseThrow();
+        model.addAttribute("modelGeneration", modelGeneration);
+        return "modelGenerationEdit";
+    }
+
+    @PostMapping("/editModelGeneration")
+    public String saveModelGeneration(
+            @RequestParam String name,
+            @RequestParam Map<String, String> form,
+            @RequestParam("modelGenerationId") ModelGeneration modelGeneration) {
+        storeService.saveModelGeneration(modelGeneration, name, form);
+        return "redirect:";
+    }
+
+    @PostMapping("model/generation/bodyType/{id}/editBodyType")
+    public String updateBodyType(@PathVariable(value = "id") long id, Model model){
+        BodyType bodyType = bodyTypeRepo.findById(id).orElseThrow();
+        model.addAttribute("bodyType", bodyType);
+        return "bodyTypeEdit";
+    }
+
+    @PostMapping("/editBodyType")
+    public String saveBodyType(
+            @RequestParam String name,
+            @RequestParam Map<String, String> form,
+            @RequestParam("bodyTypeId") BodyType bodyType) {
+        storeService.saveBodyType(bodyType, name, form);
+        return "redirect:";
+    }
+
+    @PostMapping("model/generation/bodyType/engineType/{id}/editEngineType")
+    public String updateEngineType(@PathVariable(value = "id") long id, Model model){
+        EngineType engineType = engineTypeRepo.findById(id).orElseThrow();
+        model.addAttribute("engineType", engineType);
+        return "engineTypeEdit";
+    }
+
+    @PostMapping("/editEngineType")
+    public String saveEngineType(
+            @RequestParam String name,
+            @RequestParam String capacity,
+            @RequestParam String powerHp,
+            @RequestParam String engineName,
+            @RequestParam String fuelType,
+            @RequestParam Map<String, String> form,
+            @RequestParam("engineTypeId") EngineType engineType ) {
+        storeService.saveEngineType(engineType, name, capacity, powerHp, engineName, fuelType, form);
+        return "redirect:";
     }
 }

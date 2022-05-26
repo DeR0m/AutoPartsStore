@@ -10,8 +10,8 @@ public class ProductForMark {
     private Long id;
     private String productName;
     private String productDescription;
-    private int productAmount;
-    private int productPrice;
+    private String productAmount;
+    private String productPrice;
     private String filename;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -45,19 +45,19 @@ public class ProductForMark {
         this.productDescription = productDescription;
     }
 
-    public int getProductAmount() {
+    public String getProductAmount() {
         return productAmount;
     }
 
-    public void setProductAmount(int productAmount) {
+    public void setProductAmount(String productAmount) {
         this.productAmount = productAmount;
     }
 
-    public int getProductPrice() {
+    public String getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(int productPrice) {
+    public void setProductPrice(String productPrice) {
         this.productPrice = productPrice;
     }
 

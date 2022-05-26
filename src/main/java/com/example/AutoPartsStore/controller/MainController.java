@@ -139,40 +139,4 @@ public class MainController {
         return "redirect:/";
     }
 
-    @PostMapping("{id}/remove")
-    public String removeCategory(@PathVariable(value = "id") long id) {
-        Category category = categoryRepo.findById(id).orElseThrow();
-        categoryRepo.delete(category);
-        return "redirect:/";
-    }
-
-    @PostMapping("{id}/edit")
-    public String updateCategory(@PathVariable(value = "id") long id, Model model){
-        Category category = categoryRepo.findById(id).orElseThrow();
-        model.addAttribute("category", category);
-        return "edit";
-    }
-
-    @PostMapping("{id}/removeMark")
-    public String removeCategoryMark(@PathVariable(value = "id") long id) {
-        MarkCategory markCategory = markCategoryRepo.findById(id).orElseThrow();
-        markCategoryRepo.delete(markCategory);
-        return "redirect:/";
-    }
-
-    @PostMapping("{id}/editMark")
-    public String updateCategoryMark(@PathVariable(value = "id") long id, Model model){
-        MarkCategory markCategory = markCategoryRepo.findById(id).orElseThrow();
-        model.addAttribute("markCategory", markCategory);
-        return "editMark";
-    }
-
-    @PostMapping("/editMark")
-    public String saveCategory(
-            @RequestParam String name,
-            @RequestParam Map<String, String> form,
-            @RequestParam("markCategoryId") MarkCategory markCategory) {
-        storeService.saveCategory(markCategory, name, form);
-        return "redirect:";
-    }
 }

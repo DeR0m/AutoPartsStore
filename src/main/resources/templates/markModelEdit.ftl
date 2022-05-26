@@ -9,7 +9,7 @@
         <input type="text" name="name" value="${markModel.modelName}">
 
         <input type="hidden" value="${markModel.id}" name="markModelId">
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit">Сохранить изменения</button>
 
     </form>

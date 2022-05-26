@@ -8,11 +8,11 @@
 
     <form action="/editProductForMark" method="post">
         <input type="text" name="name" value="${productForMark.productName}">
-        <input type="text" name="name" value="${productForMark.productDescription}">
-        <input type="text" name="name" value="${productForMark.productAmount}">
-        <input type="text" name="name" value="${productForMark.productPrice}">
+        <input type="text" name="description" value="${productForMark.productDescription}">
+        <input type="text" name="amount" value="${productForMark.productAmount}">
+        <input type="text" name="price" value="${productForMark.productPrice}">
         <input type="hidden" value="${productForMark.id}" name="productForMarkId">
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit">Сохранить изменения</button>
 
     </form>

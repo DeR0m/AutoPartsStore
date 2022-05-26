@@ -3,13 +3,12 @@
 
 <#--    все работает, но надо отредактировать, чтобы было красиво!!!!!!!!!!!!!!!!!!!!-->
 <@c.page>
-    <h5>${modelGeneration.generationModelName}</h5>
+    <h5>${subcategory.subcategoryName}</h5>
 
-    <form action="/editModelGeneration" method="post">
-        <input type="text" name="name" value="${modelGeneration.generationModelName}">
-        <input type="text" name="name" value="${modelGeneration.graduationYear}">
+    <form action="/editSubcategory" method="post">
+        <input type="text" name="name" value="${subcategory.subcategoryName}">
 
-        <input type="hidden" value="${modelGeneration.id}" name="modelGenerationId">
+        <input type="hidden" value="${subcategory.id}" name="subcategoryId">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit">Сохранить изменения</button>
 

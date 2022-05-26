@@ -7,10 +7,10 @@
 
     <form action="/editEngineType" method="post">
         <input type="text" name="name" value="${engineType.engineModel}">
-        <input type="text" name="name" value="${engineType.engineCapacity}">
-        <input type="text" name="name" value="${engineType.powerHp}">
-        <input type="text" name="name" value="${engineType.engineName}">
-        <input type="text" name="name" value="${engineType.fuelType}">
+        <input type="text" name="capacity" value="${engineType.engineCapacity}">
+        <input type="text" name="powerHp" value="${engineType.powerHp}">
+        <input type="text" name="engineName" value="${engineType.engineName}">
+        <input type="text" name="fuelType" value="${engineType.fuelType}">
         <input type="hidden" value="${engineType.id}" name="engineTypeId">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit">Сохранить изменения</button>
