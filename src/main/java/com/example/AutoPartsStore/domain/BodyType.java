@@ -1,11 +1,13 @@
 package com.example.AutoPartsStore.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table
-public class BodyType {
+public class BodyType implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -60,5 +62,10 @@ public class BodyType {
 
     public void setEngineTypes(Set<EngineType> engineTypes) {
         this.engineTypes = engineTypes;
+    }
+
+    @Override
+    public String getAuthority() {
+        return bodyTypeName;
     }
 }

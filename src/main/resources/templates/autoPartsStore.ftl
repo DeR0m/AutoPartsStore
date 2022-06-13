@@ -5,7 +5,7 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4">
             <div class="col-sm-6">
-                <a href="#" class="text-decoration-none text-reset">
+                <a href="user/basket" class="text-decoration-none text-reset">
                     <div class="card py-5 h-100">
                         <div class="card-body text-center">
                             <h4 class="text-uppercase m-0">Корзина</h4>

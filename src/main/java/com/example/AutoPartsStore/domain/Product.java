@@ -1,10 +1,13 @@
 package com.example.AutoPartsStore.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table
-public class Product {
+@Table(name = "products")
+public class Product implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,6 +20,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategoryId;
+
+    @ManyToMany(mappedBy = "products")
+    private List<User> usr;
 
     public Product() {
     }
@@ -75,5 +81,18 @@ public class Product {
 
     public void setSubcategoryId(Subcategory subcategoryId) {
         this.subcategoryId = subcategoryId;
+    }
+
+    public List<User> getUsr() {
+        return usr;
+    }
+
+    public void setUsr(List<User> usr) {
+        this.usr = usr;
+    }
+
+    @Override
+    public String getAuthority() {
+        return productName;
     }
 }

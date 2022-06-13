@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.Map;
 
 @Service
+
+@Transactional
 public class StoreService {
     @Autowired
     private CategoryRepo categoryRepo;
@@ -95,4 +99,6 @@ public class StoreService {
         productForMark.setProductPrice(price);
         productForMarkRepo.save(productForMark);
     }
+
+
 }

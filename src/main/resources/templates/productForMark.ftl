@@ -3,7 +3,7 @@
 
 <@c.page>
     <div class="pb-4">
-    <h2>${markCategory.markCategoryName} ${markModel.modelName} ${modelGeneration.generationModelName} ${bodyType.bodyTypeName} ${engineType.engineModel} ${categoryForMark.categoryForMarkName} ${subcategory.subcategoryName}</h2>
+        <h2>${markCategory.markCategoryName} ${markModel.modelName} ${modelGeneration.generationModelName} ${bodyType.bodyTypeName} ${engineType.engineModel} ${categoryForMark.categoryForMarkName} ${subcategory.subcategoryName}</h2>
     </div>
 
     <#if isAdmin>
@@ -102,6 +102,17 @@
                                 <span><strong>Количество на складе: ${productForMark.productAmount}</strong></span>
                                 <span><strong>Цена: ${productForMark.productPrice}</strong></span>
                             </div>
+                            <div class="container px-4">
+                                <div class="row-flex">
+                                    <div class="px-lg-2">
+                                        <form action="${subcategory.id}/${productForMark.id}/addBasket" method="post">
+                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                            <button class="btn btn-dark mt-2 mb-2" type="submit">Добавить в корзину
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                             <#if isAdmin>
                                 <div class="container px-4">
                                     <div class="row-flex">
@@ -115,6 +126,13 @@
                                             <form action="${productForMark.id}/productForMarkEdit" method="post">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="px-lg-2">
+                                            <form action="${productForMark.id}" method="post">
+                                                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                                <button class="btn btn-dark mt-2 mb-2" type="submit">Добавить в корзину
                                                 </button>
                                             </form>
                                         </div>

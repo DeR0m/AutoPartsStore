@@ -3,11 +3,14 @@ package com.example.AutoPartsStore.controller;
 import com.example.AutoPartsStore.domain.Category;
 import com.example.AutoPartsStore.domain.Product;
 import com.example.AutoPartsStore.domain.Subcategory;
+import com.example.AutoPartsStore.domain.User;
 import com.example.AutoPartsStore.repo.ProductRepo;
 import com.example.AutoPartsStore.repo.SubcategoryRepo;
+import com.example.AutoPartsStore.repo.UserRepo;
 import com.example.AutoPartsStore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,12 +42,23 @@ public class ProductController {
     private String uploadPath;
 
     @GetMapping("category/product/{id}")
-    public String categoryMain(@PathVariable(value = "id") long id,
+    public String categoryMain(@RequestParam(required = false, defaultValue = "") String filter, @PathVariable(value = "id") long id,
                                Model model) {
         Subcategory subcategory = subcategoryRepo.findById(id).orElseThrow();
+        Iterable<Product> product1 = productRepo.findAll();
+        Long l = subcategory.getId();
+        System.out.println(l);
         model.addAttribute("subcategory", subcategory);
         Set<Product> product = subcategory.getProducts();
+        if (filter != null && !filter.isEmpty()) {
+            product = productRepo.findByProductName(filter);
+        } else {
+            product = subcategory.getProducts();
+        }
+
+
         model.addAttribute("products", product);
+        model.addAttribute("filter", filter);
 
         return "product";
     }
@@ -118,4 +132,5 @@ public class ProductController {
         storeService.saveProduct(product, name, description, amount, price, form);
         return "redirect:";
     }
+
 }

@@ -5,6 +5,21 @@
     <div class="pb-4">
         <h2>${subcategory.subcategoryName}</h2>
     </div>
+
+    <div class="container px-4 px-lg-5">
+        <div class="info">
+            <div class="form-group col-md-6">
+                <form method="get" action="${subcategory.id}" class="form-inline">
+                    <input type="text" name="filter" class="form-control" value="${filter?ifExists}"
+                           placeholder="Введите название товара">
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-outline-secondary">Поиск товара</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <#if isAdmin>
         <div class="container px-4 px-lg-5">
             <div class="info">
@@ -99,6 +114,17 @@
                             <div class="card-body text-center">
                                 <span><strong>Количество на складе: ${product.productAmount}</strong></span>
                                 <span><strong>Цена: ${product.productPrice}</strong></span>
+                            </div>
+                            <div class="container px-4">
+                                <div class="row-flex">
+                                    <div class="px-lg-2">
+                                        <form action="${subcategory.id}/${product.id}/addBasket" method="post">
+                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                            <button class="btn btn-dark mt-2 mb-2" type="submit">Добавить в корзину
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <#if isAdmin>
                                 <div class="container px-4">

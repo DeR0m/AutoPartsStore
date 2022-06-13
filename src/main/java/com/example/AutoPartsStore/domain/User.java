@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,7 +30,21 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public boolean isAdmin(){
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "basket",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "basket2",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "productForMark_id")
+    )
+    private Set<ProductForMark> productForMarks;
+
+    public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
 
@@ -106,4 +121,19 @@ public class User implements UserDetails {
         this.activationCode = activationCode;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    public Set<ProductForMark> getProductForMarks() {
+        return productForMarks;
+    }
+
+    public void setProductForMarks(Set<ProductForMark> productForMarks) {
+        this.productForMarks = productForMarks;
+    }
 }

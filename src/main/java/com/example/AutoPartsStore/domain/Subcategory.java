@@ -1,11 +1,13 @@
 package com.example.AutoPartsStore.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table
-public class Subcategory {
+public class Subcategory implements GrantedAuthority {
     @Id
     @GeneratedValue
     private Long id;
@@ -85,5 +87,10 @@ public class Subcategory {
 
     public void setProductForMarks(Set<ProductForMark> productForMarks) {
         this.productForMarks = productForMarks;
+    }
+
+    @Override
+    public String getAuthority() {
+        return subcategoryName;
     }
 }

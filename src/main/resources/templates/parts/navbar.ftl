@@ -43,7 +43,7 @@
                                     <a class="bottom-navigation__link" href="/markCategories">Марки автомобилей</a>
                                 </li>
                                 <li class="bottom-navigation__link">
-                                    <a class="bottom-navigation__link" href="/basket">Корзина</a>
+                                    <a class="bottom-navigation__link" href="/user/basket/">Корзина</a>
                                 </li>
                                 <#if user??>
                                 <li class="bottom-navigation__link">

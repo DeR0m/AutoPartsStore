@@ -10,3 +10,7 @@
     display: flex;
     flex-flow: row wrap;
 }
+
+.text-button {
+    text-decoration: blink;
+}

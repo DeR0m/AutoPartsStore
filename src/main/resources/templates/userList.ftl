@@ -1,12 +1,12 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    List of user
+    Список пользователей
     <table>
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Role</th>
+            <th>Имя</th>
+            <th>Роль</th>
             <th></th>
         </tr>
         </thead>
@@ -20,7 +20,5 @@
         </#list>
         </tbody>
     </table>
-
-<#--    <#list count as el><div>${el.counts}</div></#list>-->
 
 </@c.page>

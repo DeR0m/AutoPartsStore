@@ -8,7 +8,4 @@ public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
     User findByActivationCode(String code);
-
-    @Query("SELECT COUNT(u) FROM User u")
-    Long countUsers();
 }
