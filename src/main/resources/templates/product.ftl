@@ -115,16 +115,12 @@
                                 <span><strong>Количество на складе: ${product.productAmount}</strong></span>
                                 <span><strong>Цена: ${product.productPrice}</strong></span>
                             </div>
-                            <div class="container px-4">
-                                <div class="row-flex">
-                                    <div class="px-lg-2">
-                                        <form action="${subcategory.id}/${product.id}/addBasket" method="post">
-                                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                                            <button class="btn btn-dark mt-2 mb-2" type="submit">Добавить в корзину
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
+                            <div class="text-center">
+                                <form action="${subcategory.id}/${product.id}/addBasket" method="post">
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                    <button class="btn btn-dark mt-2 mb-2" type="submit">Добавить в корзину
+                                    </button>
+                                </form>
                             </div>
                             <#if isAdmin>
                                 <div class="container px-4">

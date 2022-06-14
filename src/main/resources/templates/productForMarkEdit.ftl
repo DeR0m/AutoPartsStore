@@ -1,8 +1,6 @@
 <#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
 
-<#--    все работает, но надо отредактировать, чтобы было красиво!!!!!!!!!!!!!!!!!!!!-->
-
 <@c.page>
     <h5>${productForMark.productName}</h5>
 
