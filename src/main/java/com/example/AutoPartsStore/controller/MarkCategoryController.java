@@ -1,6 +1,5 @@
 package com.example.AutoPartsStore.controller;
 
-import com.example.AutoPartsStore.domain.Category;
 import com.example.AutoPartsStore.domain.MarkCategory;
 import com.example.AutoPartsStore.repo.MarkCategoryRepo;
 import com.example.AutoPartsStore.service.StoreService;
@@ -61,20 +60,7 @@ public class MarkCategoryController {
             model.addAttribute("markCategory", markCategory);
         } else {
 
-            if (fileForMarkCategory != null && !fileForMarkCategory.getOriginalFilename().isEmpty()) {
-                File uploadForMarkDir = new File(uploadPath);
-
-                if (!uploadForMarkDir.exists()) {
-                    uploadForMarkDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilenameForMark = uuidFile + "." + fileForMarkCategory.getOriginalFilename();
-
-                fileForMarkCategory.transferTo(new File(uploadPath + "/" + resultFilenameForMark));
-
-                markCategory.setMarkFilename(resultFilenameForMark);
-            }
+            saveFile(markCategory, fileForMarkCategory);
 
             model.addAttribute("markCategory", null);
 
@@ -88,8 +74,25 @@ public class MarkCategoryController {
         return "markCategoriesPage";
     }
 
-    @PostMapping("{id}/editMark")
-    public String updateCategoryMark(@PathVariable(value = "id") long id, Model model){
+    private void saveFile(MarkCategory markCategory, MultipartFile fileForMarkCategory) throws IOException {
+        if (fileForMarkCategory != null && !fileForMarkCategory.getOriginalFilename().isEmpty()) {
+            File uploadForMarkDir = new File(uploadPath);
+
+            if (!uploadForMarkDir.exists()) {
+                uploadForMarkDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilenameForMark = uuidFile + "." + fileForMarkCategory.getOriginalFilename();
+
+            fileForMarkCategory.transferTo(new File(uploadPath + "/" + resultFilenameForMark));
+
+            markCategory.setMarkFilename(resultFilenameForMark);
+        }
+    }
+
+    @GetMapping("{id}/editMark")
+    public String updateCategoryMark(@PathVariable(value = "id") long id, Model model) {
         MarkCategory markCategory = markCategoryRepo.findById(id).orElseThrow();
         model.addAttribute("markCategory", markCategory);
         return "editMark";
@@ -97,10 +100,13 @@ public class MarkCategoryController {
 
     @PostMapping("/editMark")
     public String saveCategoryMark(
-            @RequestParam String name,
-            @RequestParam Map<String, String> form,
-            @RequestParam("markCategoryId") MarkCategory markCategory) {
-        storeService.saveCategoryMark(markCategory, name, form);
+            @RequestParam("markCategoryId") MarkCategory markCategory,
+            @RequestParam("markCategoryName") String name,
+            @RequestParam("fileForMarkCategory") MultipartFile file
+    ) throws IOException {
+        markCategory.setMarkCategoryName(name);
+        saveFile(markCategory, file);
+        markCategoryRepo.save(markCategory);
         return "redirect:";
     }
 

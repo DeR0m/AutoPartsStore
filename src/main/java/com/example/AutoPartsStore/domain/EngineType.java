@@ -13,7 +13,7 @@ public class EngineType implements GrantedAuthority {
     private Long id;
     private String engineModel;
     private String engineCapacity;
-    private String powerHp; // в л.с. (или добавить новую переменную или сделать калькулятор для перевода
+    private String powerHp; // в л.с.
     private String engineName;
     private String fuelType;
 

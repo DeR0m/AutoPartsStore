@@ -1,19 +1,26 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    User editor
+    <h5>Пользователи</h5>
 
-    <form action="/user" method="post">
-        <input type="text" name="username" value="${user.username}">
-        <#list roles as role>
-            <div>
-                <label><input type="checkbox"
-                              name="${role}" ${user.roles?seq_contains(role)?string("checked", "")}>${role}</label>
+    <div class="form-group mt-3">
+        <form action="/user" method="post">
+            <div class="form-group mb-3">
+                <input class="form-control form-control-sm" type="text" name="username" value="${user.username}">
             </div>
-        </#list>
-        <input type="hidden" value="${user.id}" name="userId">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit">Сохранить</button>
+            <#list roles as role>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                           name="${role}" ${user.roles?seq_contains(role)?string("checked", "")}>
+                    <label class="form-check-label" for="flexCheckDefault">
+                        ${role}
+                    </label>
+                </div>
+            </#list>
+            <input type="hidden" value="${user.id}" name="userId">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <button class="btn btn-dark mt-2" type="submit">Сохранить</button>
 
-    </form>
+        </form>
+    </div>
 </@c.page>

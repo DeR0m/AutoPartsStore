@@ -4,18 +4,20 @@
 <@c.page>
     <div class="container px-4 px-lg-5">
         <div class="row gx-4">
-            <div class="col-sm-6">
-                <a href="user/basket" class="text-decoration-none text-reset">
-                    <div class="card py-5 h-100">
-                        <div class="card-body text-center">
-                            <h4 class="text-uppercase m-0">Корзина</h4>
+            <#if user??>
+                <div class="col-sm-6">
+                    <a href="user/basket" class="text-decoration-none text-reset">
+                        <div class="card py-5 h-100">
+                            <div class="card-body text-center">
+                                <h4 class="text-uppercase m-0">Корзина</h4>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            </#if>
 
             <div class="col-sm-6">
-                <a href="#" class="text-decoration-none text-reset">
+                <a href="/information" class="text-decoration-none text-reset">
                     <div class="card py-5 h-100">
                         <div class="card-body text-center">
                             <h4 class="text-uppercase m-0">Торговая сеть</h4>
@@ -88,7 +90,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="${category.id}/editCategory" method="post">
+                                            <form action="${category.id}/editCategory" method="get">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>
@@ -181,7 +183,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="${markCategory.id}/editMark" method="post">
+                                            <form action="${markCategory.id}/editMark" method="get">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>

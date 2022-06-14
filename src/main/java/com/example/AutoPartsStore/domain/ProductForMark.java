@@ -21,7 +21,7 @@ public class ProductForMark implements GrantedAuthority {
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategoryId;
 
-    @ManyToMany(mappedBy = "productForMarks")
+    @ManyToMany(mappedBy = "productForMarks", cascade = CascadeType.ALL)
     private List<User> usr;
 
     public ProductForMark() {

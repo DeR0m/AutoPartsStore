@@ -63,7 +63,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="${subcategory.id}/editSubcategory" method="post">
+                                            <form action="${subcategory.id}/editSubcategory" method="get">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>

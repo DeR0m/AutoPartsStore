@@ -74,7 +74,7 @@ public class SubcategoryForMarkController {
         return "redirect:/{modelCategoryId}/generation/bodyType/engineType/categoryForMark/subcategoryForMark/{Id}";
     }
 
-    @PostMapping("{modelCategoryId}/generation/bodyType/engineType/categoryForMark/subcategoryForMark/{id}/editSubcategory")
+    @GetMapping("{modelCategoryId}/generation/bodyType/engineType/categoryForMark/subcategoryForMark/{id}/editSubcategory")
     public String updateSubcategory(@PathVariable(value = "id") long id, Model model){
         Subcategory subcategory = subcategoryRepo.findById(id).orElseThrow();
         model.addAttribute("subcategory", subcategory);

@@ -6,8 +6,8 @@ import com.example.AutoPartsStore.domain.Subcategory;
 import com.example.AutoPartsStore.domain.User;
 import com.example.AutoPartsStore.repo.ProductForMarkRepo;
 import com.example.AutoPartsStore.repo.ProductRepo;
+import com.example.AutoPartsStore.repo.SubcategoryRepo;
 import com.example.AutoPartsStore.repo.UserRepo;
-import com.example.AutoPartsStore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Set;
 
@@ -51,11 +52,31 @@ public class BasketController {
     }
 
     @GetMapping("user/basket")
-    public String productList(Model model, @AuthenticationPrincipal User user){
+    public String productList(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("user", user);
         Set<Product> product = user.getProducts();
+        Set<ProductForMark> productForMark = user.getProductForMarks();
         model.addAttribute("products", product);
+        model.addAttribute("productForMarks", productForMark);
 
-    return "basket";
+        return "basket";
+    }
+
+    @GetMapping("user/product/{id}")
+    public String productView(@PathVariable(value = "id") long id,
+                              Model model) {
+        Product product = productRepo.findById(id).orElseThrow();
+        model.addAttribute("product", product);
+
+        return "productView";
+    }
+
+    @GetMapping("user/productForMark/{id}")
+    public String productForMarkView(@PathVariable(value = "id") long id,
+                                     Model model) {
+        ProductForMark productForMark = productForMarkRepo.findById(id).orElseThrow();
+        model.addAttribute("productForMark", productForMark);
+
+        return "productForMarkView";
     }
 }

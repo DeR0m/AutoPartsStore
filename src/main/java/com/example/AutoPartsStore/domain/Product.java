@@ -17,11 +17,11 @@ public class Product implements GrantedAuthority {
     private String productPrice;
     private String filename;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategoryId;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
     private List<User> usr;
 
     public Product() {

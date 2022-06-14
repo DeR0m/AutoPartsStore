@@ -42,18 +42,20 @@
                                 <li class="bottom-navigation__link">
                                     <a class="bottom-navigation__link" href="/markCategories">Марки автомобилей</a>
                                 </li>
-                                <li class="bottom-navigation__link">
-                                    <a class="bottom-navigation__link" href="/user/basket/">Корзина</a>
-                                </li>
                                 <#if user??>
-                                <li class="bottom-navigation__link">
-                                    <a class="bottom-navigation__link" href="/user/profile">Профиль</a>
-                                </li>
+                                    <li class="bottom-navigation__link">
+                                        <a class="bottom-navigation__link" href="/user/basket/">Корзина</a>
+                                    </li>
+                                </#if>
+                                <#if user??>
+                                    <li class="bottom-navigation__link">
+                                        <a class="bottom-navigation__link" href="/user/profile">Профиль</a>
+                                    </li>
                                 </#if>
                                 <#if isAdmin>
-                                <li class="bottom-navigation__link">
-                                    <a class="bottom-navigation__link" href="/user">Пользователи</a>
-                                </li>
+                                    <li class="bottom-navigation__link">
+                                        <a class="bottom-navigation__link" href="/user">Пользователи</a>
+                                    </li>
                                 </#if>
 
                             </ul>

@@ -73,20 +73,7 @@ public class MarkController {
             model.addAttribute("markModel", markModel);
         } else {
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                markModel.setFilename(resultFilename);
-            }
+            saveFileModel(markModel, file);
 
             model.addAttribute("markModel", null);
 
@@ -99,7 +86,24 @@ public class MarkController {
 
         model.addAttribute("markModels", markModel);
 
-        return "redirect:/{Id}/model";
+        return "redirect:/model/{Id}";
+    }
+
+    private void saveFileModel(MarkModel markModel, MultipartFile file) throws IOException {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            markModel.setFilename(resultFilename);
+        }
     }
 
     //переход на поколения автомобиля
@@ -136,20 +140,7 @@ public class MarkController {
             model.addAttribute("modelGeneration", modelGeneration);
         } else {
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                modelGeneration.setFilename(resultFilename);
-            }
+            saveFileModelGeneration(modelGeneration, file);
 
             model.addAttribute("modelGeneration", null);
 
@@ -163,6 +154,23 @@ public class MarkController {
         model.addAttribute("modelGenerations", modelGeneration);
 
         return "redirect:/{modelCategoryId}/generation/{Id}";
+    }
+
+    private void saveFileModelGeneration(ModelGeneration modelGeneration, MultipartFile file) throws IOException {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            modelGeneration.setFilename(resultFilename);
+        }
     }
 
     //    переход на выбор тип кузова автомобиля
@@ -202,20 +210,7 @@ public class MarkController {
             model.addAttribute("bodyType", bodyType);
         } else {
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                bodyType.setFilename(resultFilename);
-            }
+            saveFileBodyType(bodyType, file);
 
             model.addAttribute("bodyType", null);
 
@@ -229,6 +224,23 @@ public class MarkController {
         model.addAttribute("bodyTypes", bodyTypes);
 
         return "redirect:/{modelCategoryId}/generation/bodyType/{Id}";
+    }
+
+    private void saveFileBodyType(BodyType bodyType, MultipartFile file) throws IOException {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            bodyType.setFilename(resultFilename);
+        }
     }
 
     @GetMapping("{modelCategoryId}/generation/bodyType/engineType/{Id}")
@@ -272,8 +284,8 @@ public class MarkController {
         return "redirect:/{modelCategoryId}/generation/bodyType/engineType/{Id}";
     }
 
-    @PostMapping("model/{id}/editMarkModel")
-    public String updateMarkModel(@PathVariable(value = "id") long id, Model model){
+    @GetMapping("model/{id}/editMarkModel")
+    public String updateMarkModel(@PathVariable(value = "id") long id, Model model) {
         MarkModel markModel = markModelRepo.findById(id).orElseThrow();
         model.addAttribute("markModel", markModel);
         return "markModelEdit";
@@ -281,15 +293,18 @@ public class MarkController {
 
     @PostMapping("/editMarkModel")
     public String saveMarkModel(
-            @RequestParam String name,
-            @RequestParam Map<String, String> form,
-            @RequestParam("markModelId") MarkModel markModel) {
-        storeService.saveMarkModel(markModel, name, form);
+            @RequestParam("markModelId") MarkModel markModel,
+            @RequestParam("modelName") String name,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        markModel.setModelName(name);
+        saveFileModel(markModel, file);
+        markModelRepo.save(markModel);
         return "redirect:";
     }
 
-    @PostMapping("model/generation/{id}/editModelGeneration")
-    public String updateModelGeneration(@PathVariable(value = "id") long id, Model model){
+    @GetMapping("model/generation/{id}/editModelGeneration")
+    public String updateModelGeneration(@PathVariable(value = "id") long id, Model model) {
         ModelGeneration modelGeneration = modelGenerationRepo.findById(id).orElseThrow();
         model.addAttribute("modelGeneration", modelGeneration);
         return "modelGenerationEdit";
@@ -297,15 +312,20 @@ public class MarkController {
 
     @PostMapping("/editModelGeneration")
     public String saveModelGeneration(
-            @RequestParam String name,
-            @RequestParam Map<String, String> form,
-            @RequestParam("modelGenerationId") ModelGeneration modelGeneration) {
-        storeService.saveModelGeneration(modelGeneration, name, form);
+            @RequestParam("modelGenerationId") ModelGeneration modelGeneration,
+            @RequestParam("generationModelName") String name,
+            @RequestParam("graduationYear") String year,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        modelGeneration.setGenerationModelName(name);
+        modelGeneration.setGraduationYear(year);
+        saveFileModelGeneration(modelGeneration, file);
+        modelGenerationRepo.save(modelGeneration);
         return "redirect:";
     }
 
-    @PostMapping("model/generation/bodyType/{id}/editBodyType")
-    public String updateBodyType(@PathVariable(value = "id") long id, Model model){
+    @GetMapping("model/generation/bodyType/{id}/editBodyType")
+    public String updateBodyType(@PathVariable(value = "id") long id, Model model) {
         BodyType bodyType = bodyTypeRepo.findById(id).orElseThrow();
         model.addAttribute("bodyType", bodyType);
         return "bodyTypeEdit";
@@ -313,15 +333,18 @@ public class MarkController {
 
     @PostMapping("/editBodyType")
     public String saveBodyType(
-            @RequestParam String name,
-            @RequestParam Map<String, String> form,
-            @RequestParam("bodyTypeId") BodyType bodyType) {
-        storeService.saveBodyType(bodyType, name, form);
+            @RequestParam("bodyTypeId") BodyType bodyType,
+            @RequestParam("bodyTypeName") String name,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        bodyType.setBodyTypeName(name);
+        saveFileBodyType(bodyType, file);
+        bodyTypeRepo.save(bodyType);
         return "redirect:";
     }
 
-    @PostMapping("model/generation/bodyType/engineType/{id}/editEngineType")
-    public String updateEngineType(@PathVariable(value = "id") long id, Model model){
+    @GetMapping("model/generation/bodyType/engineType/{id}/editEngineType")
+    public String updateEngineType(@PathVariable(value = "id") long id, Model model) {
         EngineType engineType = engineTypeRepo.findById(id).orElseThrow();
         model.addAttribute("engineType", engineType);
         return "engineTypeEdit";
@@ -329,14 +352,19 @@ public class MarkController {
 
     @PostMapping("/editEngineType")
     public String saveEngineType(
-            @RequestParam String name,
-            @RequestParam String capacity,
-            @RequestParam String powerHp,
-            @RequestParam String engineName,
-            @RequestParam String fuelType,
-            @RequestParam Map<String, String> form,
-            @RequestParam("engineTypeId") EngineType engineType ) {
-        storeService.saveEngineType(engineType, name, capacity, powerHp, engineName, fuelType, form);
+            @RequestParam("engineTypeId") EngineType engineType,
+            @RequestParam("engineModel") String name,
+            @RequestParam("engineCapacity") String capacity,
+            @RequestParam("powerHp") String powerHp,
+            @RequestParam("engineName") String engineName,
+            @RequestParam("fuelType") String fuelType
+            ) {
+        engineType.setEngineModel(name);
+        engineType.setEngineCapacity(capacity);
+        engineType.setPowerHp(powerHp);
+        engineType.setEngineName(engineName);
+        engineType.setFuelType(fuelType);
+        engineTypeRepo.save(engineType);
         return "redirect:";
     }
 }

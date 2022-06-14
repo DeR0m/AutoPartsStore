@@ -84,20 +84,7 @@ public class ProductForMarkController {
             model.addAttribute("productForMark", productForMark);
         } else {
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                productForMark.setFilename(resultFilename);
-            }
+            saveFile(productForMark, file);
 
             model.addAttribute("productForMark", null);
 
@@ -111,8 +98,26 @@ public class ProductForMarkController {
         return "redirect:/{modelCategoryId}/generation/bodyType/engineType/categoryForMark/subcategoryForMark/productForMark/{Id}";
     }
 
-    @PostMapping("model/generation/bodyType/engineType/categoryForMark/subcategoryForMark/productForMark/{id}/productForMarkEdit")
-    public String updateProductForMark(@PathVariable(value = "id") long id, Model model){
+    private void saveFile(@Valid ProductForMark productForMark, @RequestParam("file") MultipartFile file) throws IOException {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            productForMark.setFilename(resultFilename);
+
+        }
+    }
+
+    @GetMapping("model/generation/bodyType/engineType/categoryForMark/subcategoryForMark/productForMark/{id}/productForMarkEdit")
+    public String updateProductForMark(@PathVariable(value = "id") long id, Model model) {
         ProductForMark productForMark = productForMarkRepo.findById(id).orElseThrow();
         model.addAttribute("productForMark", productForMark);
         return "productForMarkEdit";
@@ -120,13 +125,19 @@ public class ProductForMarkController {
 
     @PostMapping("/editProductForMark")
     public String saveProductForMark(
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam String amount,
-            @RequestParam String price,
-            @RequestParam Map<String, String> form,
-            @RequestParam("productForMarkId") ProductForMark productForMark) {
-        storeService.saveProductForMark(productForMark, name, description, amount, price, form);
+            @RequestParam("productForMarkId") ProductForMark productForMark,
+            @RequestParam("productName") String name,
+            @RequestParam("productDescription") String description,
+            @RequestParam("productAmount") String amount,
+            @RequestParam("productPrice") String price,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        productForMark.setProductName(name);
+        productForMark.setProductDescription(description);
+        productForMark.setProductAmount(amount);
+        productForMark.setProductPrice(price);
+        saveFile(productForMark, file);
+        productForMarkRepo.save(productForMark);
         return "redirect:";
     }
 }

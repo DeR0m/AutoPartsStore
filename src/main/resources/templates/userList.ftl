@@ -1,21 +1,21 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    Список пользователей
-    <table>
+    <h5>Список пользователей</h5>
+    <table class="table">
         <thead>
-        <tr>
-            <th>Имя</th>
-            <th>Роль</th>
-            <th></th>
+        <tr class="text-center">
+            <th scope="col">Имя</th>
+            <th scope="col">Роль</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <#list users as user>
-            <tr>
+            <tr class="text-center">
                 <td>${user.username}</td>
                 <td><#list user.roles as role>${role}<#sep>, </#list></td>
-                <td><a href="/user/${user.id}">edit</a></td>
+                <td><a href="/user/${user.id}" class="btn btn-dark" role="button">Изменить</a></td>
             </tr>
         </#list>
         </tbody>

@@ -14,7 +14,7 @@
                         <div class="form-group mb-3">
                             <input type="text"
                                    class="form-control form-control-sm ${(categoryForMarkNameError??)?string('is-invalid','')}"
-                                   value="<#if categoryForMarkName??>${categoryForMark.categoryForMarkName}</#if>"
+                                   value="<#if categoryForMark??>${categoryForMark.categoryForMarkName}</#if>"
                                    placeholder="Название категории" aria-label="categoryForMarkName"
                                    name="categoryForMarkName"
                                    aria-describedby="basic-addon1">
@@ -64,7 +64,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="#" method="post">
+                                            <form action="${categoryForMark.id}/editCategoryForMark" method="get">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>

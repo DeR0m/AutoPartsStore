@@ -14,7 +14,7 @@
                         <div class="form-group mb-3">
                             <input type="text"
                                    class="form-control form-control-sm ${(modelNameError??)?string('is-invalid','')}"
-                                   value="<#if modelName??>${markModel.modelName}</#if>"
+                                   value="<#if markModel??>${markModel.modelName}</#if>"
                                    placeholder="Название модели" aria-label="modelName"
                                    name="modelName"
                                    aria-describedby="basic-addon1">
@@ -62,7 +62,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="${markModel.id}/editMarkModel" method="post">
+                                            <form action="${markModel.id}/editMarkModel" method="get">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>

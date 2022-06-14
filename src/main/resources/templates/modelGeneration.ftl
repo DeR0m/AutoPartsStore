@@ -80,7 +80,7 @@
                                             </form>
                                         </div>
                                         <div class="px-lg-2">
-                                            <form action="${modelGeneration.id}/editModelGeneration" method="post">
+                                            <form action="${modelGeneration.id}/editModelGeneration" method="get">
                                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                                 <button class="btn btn-dark mt-2 mb-2" type="submit">Редактировать
                                                 </button>

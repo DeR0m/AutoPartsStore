@@ -4,7 +4,6 @@ import com.example.AutoPartsStore.domain.Category;
 import com.example.AutoPartsStore.domain.Subcategory;
 import com.example.AutoPartsStore.repo.CategoryRepo;
 import com.example.AutoPartsStore.repo.SubcategoryRepo;
-import com.example.AutoPartsStore.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -27,9 +26,6 @@ import java.util.UUID;
 public class CategoryController {
     @Autowired
     private SubcategoryRepo subcategoryRepo;
-
-    @Autowired
-    private StoreService storeService;
 
     @Autowired
     private CategoryRepo categoryRepo;
@@ -67,20 +63,8 @@ public class CategoryController {
             model.addAttribute("category", category);
         } else {
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
+            saveFile(category, file);
 
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                category.setFilename(resultFilename);
-            }
 
             model.addAttribute("category", null);
 
@@ -114,7 +98,7 @@ public class CategoryController {
             Model model,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-      subcategory.setCategoryId(category);
+        subcategory.setCategoryId(category);
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -122,20 +106,7 @@ public class CategoryController {
             model.addAttribute("subcategory", subcategory);
         } else {
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                subcategory.setFilename(resultFilename);
-            }
+            saveFileSubcategory(subcategory, file);
 
             model.addAttribute("subcategory", null);
 
@@ -149,8 +120,45 @@ public class CategoryController {
         return "redirect:/category/{id}";
     }
 
-    @PostMapping("{id}/editCategory")
-    public String updateCategory(@PathVariable(value = "id") long id, Model model){
+    private void saveFileSubcategory(@Valid Subcategory subcategory, @RequestParam("file") MultipartFile file) throws IOException {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            subcategory.setFilename(resultFilename);
+
+        }
+    }
+
+    private void saveFile(@Valid Category category, @RequestParam("file") MultipartFile file) throws IOException {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            category.setFilename(resultFilename);
+
+        }
+    }
+
+
+    @GetMapping("{id}/editCategory")
+    public String updateCategory(@PathVariable(value = "id") long id, Model model) {
         Category category = categoryRepo.findById(id).orElseThrow();
         model.addAttribute("category", category);
         return "editCategory";
@@ -158,10 +166,14 @@ public class CategoryController {
 
     @PostMapping("/editCategory")
     public String saveCategory(
-            @RequestParam String name,
-            @RequestParam Map<String, String> form,
-            @RequestParam("categoryId") Category category) {
-        storeService.saveCategory(category, name, form);
+            @RequestParam("categoryId") Category category,
+            @RequestParam("categoryName") String name,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        category.setCategoryName(name);
+        saveFile(category, file);
+        categoryRepo.save(category);
+
         return "redirect:";
     }
 
@@ -179,15 +191,15 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
-    @PostMapping("{categoryId}/{subcategoryId}/removeSubcategory")
+    @PostMapping("category/{categoryId}/{subcategoryId}/removeSubcategory")
     public String removeSubcategory(@PathVariable(value = "subcategoryId") long id) {
         Subcategory subcategory = subcategoryRepo.findById(id).orElseThrow();
         subcategoryRepo.delete(subcategory);
         return "redirect:/category/{categoryId}";
     }
 
-    @PostMapping("category/{id}/editSubcategory")
-    public String updateSubcategory(@PathVariable(value = "id") long id, Model model){
+    @GetMapping("category/{id}/editSubcategory")
+    public String updateSubcategory(@PathVariable(value = "id") long id, Model model) {
         Subcategory subcategory = subcategoryRepo.findById(id).orElseThrow();
         model.addAttribute("subcategory", subcategory);
         return "subcategoryEdit";
@@ -195,10 +207,13 @@ public class CategoryController {
 
     @PostMapping("/editSubcategory")
     public String saveSubcategory(
-            @RequestParam String name,
-            @RequestParam Map<String, String> form,
-            @RequestParam("subcategoryId") Subcategory subcategory) {
-        storeService.saveSubcategory(subcategory, name, form);
+            @RequestParam("subcategoryId") Subcategory subcategory,
+            @RequestParam("subcategoryName") String name,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        subcategory.setSubcategoryName(name);
+        saveFileSubcategory(subcategory, file);
+        subcategoryRepo.save(subcategory);
         return "redirect:";
     }
 }

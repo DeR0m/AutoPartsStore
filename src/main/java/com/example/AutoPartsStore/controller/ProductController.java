@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.PreRemove;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +45,8 @@ public class ProductController {
     private String uploadPath;
 
     @GetMapping("category/product/{id}")
-    public String categoryMain(@RequestParam(required = false, defaultValue = "") String filter, @PathVariable(value = "id") long id,
-                               Model model) {
+    public String productMain(@RequestParam(required = false, defaultValue = "") String filter, @PathVariable(value = "id") long id,
+                              Model model) {
         Subcategory subcategory = subcategoryRepo.findById(id).orElseThrow();
         Iterable<Product> product1 = productRepo.findAll();
         Long l = subcategory.getId();
@@ -64,7 +67,7 @@ public class ProductController {
     }
 
     @PostMapping("category/product/{id}")
-    public String createSubcategory(
+    public String createProduct(
             @Valid Subcategory subcategory,
             @Valid Product product,
             BindingResult bindingResult,
@@ -79,20 +82,8 @@ public class ProductController {
             model.addAttribute("product", product);
         } else {
 
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
 
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                product.setFilename(resultFilename);
-            }
+            saveFile(product, file);
 
             model.addAttribute("product", null);
 
@@ -106,6 +97,25 @@ public class ProductController {
         return "redirect:/category/product/{id}";
     }
 
+    private void saveFile(@Valid Product product, @RequestParam("file") MultipartFile file) throws IOException {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+            product.setFilename(resultFilename);
+
+        }
+    }
+
+
     @PostMapping("category/product/{subcategoryId}/{productId}/productRemove")
     public String productRemove(@PathVariable(value = "productId") long id) {
         Product product = productRepo.findById(id).orElseThrow();
@@ -114,8 +124,9 @@ public class ProductController {
         return "redirect:/category/product/{subcategoryId}";
     }
 
-    @PostMapping("category/product/{id}/productEdit")
-    public String updateProduct(@PathVariable(value = "id") long id, Model model){
+
+    @GetMapping("category/product/{id}/productEdit")
+    public String updateProduct(@PathVariable(value = "id") long id, Model model) {
         Product product = productRepo.findById(id).orElseThrow();
         model.addAttribute("product", product);
         return "productEdit";
@@ -123,14 +134,19 @@ public class ProductController {
 
     @PostMapping("/editProduct")
     public String saveProduct(
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam String amount,
-            @RequestParam String price,
-            @RequestParam Map<String, String> form,
-            @RequestParam("productId") Product product) {
-        storeService.saveProduct(product, name, description, amount, price, form);
+            @RequestParam("productId") Product product,
+            @RequestParam("productName") String name,
+            @RequestParam("productDescription") String description,
+            @RequestParam("productAmount") String amount,
+            @RequestParam("productPrice") String price,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        product.setProductName(name);
+        product.setProductDescription(description);
+        product.setProductAmount(amount);
+        product.setProductPrice(price);
+        saveFile(product, file);
+        productRepo.save(product);
         return "redirect:";
     }
-
 }

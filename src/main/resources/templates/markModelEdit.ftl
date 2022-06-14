@@ -5,12 +5,34 @@
 <@c.page>
     <h5>${markModel.modelName}</h5>
 
-    <form action="/editMarkModel" method="post">
-        <input type="text" name="name" value="${markModel.modelName}">
+    <div class="container px-4 px-lg-5">
+        <div class="info">
+            <div class="form-group mt-3">
+                <form action="/editMarkModel" method="post" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <input type="text"
+                               class="form-control form-control-sm ${(modelNameError??)?string('is-invalid','')}"
+                               value="<#if markModel??>${markModel.modelName}</#if>"
+                               placeholder="Название модели" aria-label="modelName"
+                               name="modelName"
+                               aria-describedby="basic-addon1">
+                        <#if modelNameError??>
+                            <div class="invalid-feedback">
+                                ${modelNameError}
+                            </div>
+                        </#if>
+                    </div>
 
-        <input type="hidden" value="${markModel.id}" name="markModelId">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit">Сохранить изменения</button>
-
-    </form>
+                    <div class="form-group mb-3">
+                        <input name="file" class="form-control form-control-sm" id="formFileSm" type="file">
+                    </div>
+                    <input type="hidden" value="${markModel.id}" name="markModelId">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-secondary">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </@c.page>
